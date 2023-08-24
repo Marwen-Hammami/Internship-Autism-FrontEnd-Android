@@ -2,11 +2,9 @@ package com.example.internship_autism.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.internship_autism.R
 import com.example.internship_autism.models.ProgressionModel
-import com.example.internship_autism.ui.ViewModel.MainActivutyViewModel
+import com.example.internship_autism.ui.ViewModel.ProgressionViewModel
 import com.example.internship_autism.ui.adapters.RecyclerViewAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var GetOne: Button
     lateinit var recycleview: RecyclerView
     lateinit var RecyclerViewAdapter: RecyclerViewAdapter
-    lateinit var viewModel: MainActivutyViewModel
+    lateinit var viewModel: ProgressionViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -62,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
     fun initViewModel() {
         //needs to be better separeted
-        viewModel = ViewModelProvider(this).get(MainActivutyViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ProgressionViewModel::class.java)
         viewModel.getProgressionListObservable().observe(this, Observer<List<ProgressionModel>> {
             if(it == null) {
                 Toast.makeText(this@MainActivity, "no result found...", Toast.LENGTH_LONG).show()

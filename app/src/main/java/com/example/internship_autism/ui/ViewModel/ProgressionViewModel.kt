@@ -10,15 +10,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivutyViewModel:  ViewModel(){
+class ProgressionViewModel:  ViewModel(){
 
     lateinit var recyclerListData: MutableLiveData<List<ProgressionModel>>
+    lateinit var getLiveData: MutableLiveData<ProgressionModel>
     lateinit var createLiveData: MutableLiveData<ProgressionModel?>
     lateinit var updateLiveData: MutableLiveData<ProgressionModel?>
     lateinit var deleteLiveData: MutableLiveData<Boolean>
 
     init {
         recyclerListData = MutableLiveData()
+        getLiveData = MutableLiveData()
         createLiveData = MutableLiveData()
         updateLiveData = MutableLiveData()
         deleteLiveData = MutableLiveData()
@@ -26,6 +28,10 @@ class MainActivutyViewModel:  ViewModel(){
 
     fun getProgressionListObservable(): MutableLiveData<List<ProgressionModel>> {
         return recyclerListData
+    }
+
+    fun getProgressionObservable(): MutableLiveData<ProgressionModel> {
+        return getLiveData
     }
 
     fun getCreateNewProgressionObservable(): MutableLiveData<ProgressionModel?> {
@@ -59,10 +65,37 @@ class MainActivutyViewModel:  ViewModel(){
             override fun onFailure(call: Call<List<ProgressionModel>>, t: Throwable?) {
                 recyclerListData.postValue(null)
                 if (t != null) {
-                    Log.d("MainActivityError", "onFailure: "+ t.message.toString())
+                    Log.d("MyApp", "Progression List: "+ t.message.toString())
                 }
             }
         })
+    }
+
+    fun getProgression(_id: String){
+        val retroInstance = RetroInstance.getRetroInstance().create(ProgressionAPI::class.java)
+        val call = retroInstance.getProgression(_id)
+        call.enqueue(
+            object : Callback<ProgressionModel>{
+                override fun onResponse(
+                    call: Call<ProgressionModel>,
+                    response: Response<ProgressionModel>
+                ) {
+                    if (response.isSuccessful) {
+                        createLiveData.postValue(response.body())
+                    }else {
+                        createLiveData.postValue(null)
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ProgressionModel>, t: Throwable?) {
+                    createLiveData.postValue(null)
+                    if (t != null) {
+                        Log.d("MyApp", "Progression GetOne: "+ t.message.toString())
+                    }
+                }
+            }
+        )
     }
 
     fun createProgression(progression: ProgressionModel){
@@ -84,7 +117,7 @@ class MainActivutyViewModel:  ViewModel(){
             override fun onFailure(call: Call<ProgressionModel>, t: Throwable?) {
                 createLiveData.postValue(null)
                 if (t != null) {
-                    Log.d("CreateProgressionError", "onFailure: "+ t.message.toString())
+                    Log.d("MyApp", "Progression Create: "+ t.message.toString())
                 }
             }
         })
@@ -109,7 +142,7 @@ class MainActivutyViewModel:  ViewModel(){
             override fun onFailure(call: Call<ProgressionModel>, t: Throwable?) {
                 updateLiveData.postValue(null)
                 if (t != null) {
-                    Log.d("UpdateProgressionError", "onFailure: "+ t.message.toString())
+                    Log.d("MyApp", "Progression Update: "+ t.message.toString())
                 }
             }
         })
@@ -128,7 +161,7 @@ class MainActivutyViewModel:  ViewModel(){
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.d("DeleteProgressionError", "onFailure: "+ t.message.toString())
+                Log.d("MyApp", "Progression Delete: "+ t.message.toString())
                 deleteLiveData.postValue(false) // Handle network or other failures
             }
         })
