@@ -12,9 +12,9 @@ open class User(
 data class Parent(
     val email: String,
     val password: String,
-    val sex: String,
-    val avatar: String,
-    val childsList: List<Child>
+    val sex: String = "",
+    val avatar: String = "",
+    val childsList: List<Child>? = null
 ): User()
 
 data class Child(
