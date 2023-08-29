@@ -80,15 +80,15 @@ class SubjectViewModel:  ViewModel() {
                     response: Response<SubjectModel>
                 ) {
                     if (response.isSuccessful) {
-                        createLiveData.postValue(response.body())
+                        getLiveData.postValue(response.body())
                     }else {
-                        createLiveData.postValue(null)
+                        getLiveData.postValue(null)
                     }
 
                 }
 
                 override fun onFailure(call: Call<SubjectModel>, t: Throwable?) {
-                    createLiveData.postValue(null)
+                    getLiveData.postValue(null)
                     if (t != null) {
                         Log.d("MyApp", "Subject GetOne: "+ t.message.toString())
                     }

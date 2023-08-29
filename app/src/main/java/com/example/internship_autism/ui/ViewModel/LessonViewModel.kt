@@ -80,15 +80,15 @@ class LessonViewModel:  ViewModel() {
                     response: Response<LessonModel>
                 ) {
                     if (response.isSuccessful) {
-                        createLiveData.postValue(response.body())
+                        getLiveData.postValue(response.body())
                     }else {
-                        createLiveData.postValue(null)
+                        getLiveData.postValue(null)
                     }
 
                 }
 
                 override fun onFailure(call: Call<LessonModel>, t: Throwable?) {
-                    createLiveData.postValue(null)
+                    getLiveData.postValue(null)
                     if (t != null) {
                         Log.d("MyApp", "Lesson GetOne: "+ t.message.toString())
                     }

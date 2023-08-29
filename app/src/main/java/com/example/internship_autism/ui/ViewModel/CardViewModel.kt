@@ -82,15 +82,15 @@ class CardViewModel:  ViewModel() {
                     response: Response<Card>
                 ) {
                     if (response.isSuccessful) {
-                        createLiveData.postValue(response.body())
+                        getLiveData.postValue(response.body())
                     }else {
-                        createLiveData.postValue(null)
+                        getLiveData.postValue(null)
                     }
 
                 }
 
                 override fun onFailure(call: Call<Card>, t: Throwable?) {
-                    createLiveData.postValue(null)
+                    getLiveData.postValue(null)
                     if (t != null) {
                         Log.d("MyApp", "Card GetOne: "+ t.message.toString())
                     }

@@ -93,15 +93,15 @@ class UserViewModel:  ViewModel() {
                     response: Response<User>
                 ) {
                     if (response.isSuccessful) {
-                        createLiveData.postValue(response.body())
+                        getLiveData.postValue(response.body())
                     }else {
-                        createLiveData.postValue(null)
+                        getLiveData.postValue(null)
                     }
 
                 }
 
                 override fun onFailure(call: Call<User>, t: Throwable?) {
-                    createLiveData.postValue(null)
+                    getLiveData.postValue(null)
                     if (t != null) {
                         Log.d("MyApp", "User GetOne: "+ t.message.toString())
                     }
@@ -213,15 +213,15 @@ class UserViewModel:  ViewModel() {
                 response: Response<User>
             ) {
                 if (response.isSuccessful) {
-                    updateLiveData.postValue(response.body())
+                    changePassword.postValue(response.body())
                 }else {
-                    updateLiveData.postValue(null)
+                    changePassword.postValue(null)
                 }
 
             }
 
             override fun onFailure(call: Call<User>, t: Throwable?) {
-                updateLiveData.postValue(null)
+                changePassword.postValue(null)
                 if (t != null) {
                     Log.d("MyApp", "User Update password: "+ t.message.toString())
                 }
