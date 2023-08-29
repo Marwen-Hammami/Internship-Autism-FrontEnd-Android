@@ -1,5 +1,6 @@
 package com.example.internship_autism.interfaces
 
+import com.example.internship_autism.models.Administrator
 import com.example.internship_autism.models.User
 import retrofit2.Call
 import retrofit2.http.Body
@@ -26,7 +27,7 @@ interface UserAPI {
     fun deleteUser(@Path("id") id: String): Call<Void>
 
     @POST("users/login")
-    fun logIn(@Body params: User): Call<User>
+    fun logIn(@Body user: Administrator): Call<User>
 
     @PUT("users/updatepassword")
     fun updatePassword(@Body params: User): Call<User>

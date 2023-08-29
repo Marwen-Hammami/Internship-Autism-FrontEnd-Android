@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.internship_autism.interfaces.UserAPI
+import com.example.internship_autism.models.Administrator
 import com.example.internship_autism.models.User
 import com.example.internship_autism.utils.RetroInstance
 import retrofit2.Call
@@ -178,7 +179,7 @@ class UserViewModel:  ViewModel() {
         })
     }
 
-    fun logIn(subject: User){
+    fun logIn(subject: Administrator){
         val retroInstance = RetroInstance.getRetroInstance().create(UserAPI::class.java)
         val call = retroInstance.logIn(subject)
         call.enqueue(object : Callback<User> {
@@ -187,15 +188,15 @@ class UserViewModel:  ViewModel() {
                 response: Response<User>
             ) {
                 if (response.isSuccessful) {
-                    createLiveData.postValue(response.body())
+                    login.postValue(response.body())
                 }else {
-                    createLiveData.postValue(null)
+                    login.postValue(null)
                 }
 
             }
 
             override fun onFailure(call: Call<User>, t: Throwable?) {
-                createLiveData.postValue(null)
+                login.postValue(null)
                 if (t != null) {
                     Log.d("MyApp", "User login: "+ t.message.toString())
                 }
@@ -203,7 +204,7 @@ class UserViewModel:  ViewModel() {
         })
     }
 
-    fun changePassword(subject: User){
+    fun changePassword(subject: Administrator){
         val retroInstance = RetroInstance.getRetroInstance().create(UserAPI::class.java)
         val call = retroInstance.updatePassword( subject)
         call.enqueue(object : Callback<User> {

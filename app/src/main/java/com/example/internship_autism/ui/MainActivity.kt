@@ -2,116 +2,101 @@ package com.example.internship_autism.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.internship_autism.R
-import com.example.internship_autism.models.ProgressionModel
-import com.example.internship_autism.ui.ViewModel.ProgressionViewModel
-import com.example.internship_autism.ui.adapters.RecyclerViewAdapter
+import android.transition.ChangeBounds
+import android.transition.TransitionManager
+import android.util.Log
+import android.view.View
+import android.view.animation.AnticipateOvershootInterpolator
+import android.widget.EditText
+import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import com.example.internship_autism.models.Administrator
+import com.example.internship_autism.models.User
+import com.example.internship_autism.ui.ViewModel.UserViewModel
 
 class MainActivity : AppCompatActivity() {
-    lateinit var txtId: TextView
-    lateinit var GetAll: Button
-    lateinit var GetOne: Button
-    lateinit var recycleview: RecyclerView
-    lateinit var RecyclerViewAdapter: RecyclerViewAdapter
-    lateinit var viewModel: ProgressionViewModel
+    //for the login animation
+    private var isDetailLayout = false
+    lateinit var constraintLayout: ConstraintLayout
+
+    //login elements
+    lateinit var loginEmailAddress: EditText
+    lateinit var loginPassword: EditText
+    lateinit var buttonLogin: AppCompatButton
+    lateinit var viewModel: UserViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        txtId = findViewById(R.id.txtId)
-        recycleview = findViewById(R.id.recycleview)
+        setContentView(R.layout.auth_login)
 
-        initRecyclerView()
+        //for the login animation
+        constraintLayout = findViewById(R.id.constraintLayout)
+
+        //hide the navigation bar for more space
+        window.decorView.apply {
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
+
+        constraintLayout.setOnClickListener {
+            if (isDetailLayout)
+                swapFrames(R.layout.auth_login) // switch to default layout
+            else
+                swapFrames(R.layout.auth_login_detail) // switch to detail layout
+        }
+
+        //login elements
+        loginEmailAddress= findViewById(R.id.loginEmailAddress)
+        loginPassword= findViewById(R.id.loginPassword)
+        buttonLogin= findViewById(R.id.buttonLogin)
+
         initViewModel()
 
-
-        GetAll = findViewById(R.id.GetAll)
-        GetAll.setOnClickListener {
-            //getMyData()
-            createProgression()
+        buttonLogin.setOnClickListener{
+            //login()
+            var user = Administrator(email = loginEmailAddress.text.toString(), password = loginPassword.text.toString())
+            logIn(user)
         }
-
-        GetOne = findViewById(R.id.GetOne)
-        GetOne.setOnClickListener {
-            //getMyData()
-            //updateProgression()
-            deleteProgression()
-        }
-
     }
 
-    private fun initRecyclerView() {
-        recycleview.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            val decoration = DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL)
-            addItemDecoration(decoration)
-            RecyclerViewAdapter = RecyclerViewAdapter()
-            adapter = RecyclerViewAdapter
 
-        }
+    //for the animatin
+    private fun swapFrames(layoutId: Int){
+
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(this, layoutId)
+
+        val transition = ChangeBounds()
+        transition.interpolator = AnticipateOvershootInterpolator(1.0f)
+        transition.duration = 1200
+
+        TransitionManager.beginDelayedTransition(constraintLayout, transition)
+
+        constraintSet.applyTo(constraintLayout)
+
+        isDetailLayout = !isDetailLayout
     }
 
     fun initViewModel() {
         //needs to be better separeted
-        viewModel = ViewModelProvider(this).get(ProgressionViewModel::class.java)
-        viewModel.getProgressionListObservable().observe(this, Observer<List<ProgressionModel>> {
+        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        viewModel.logInObservable().observe(this, Observer<User?> {
             if(it == null) {
-                Toast.makeText(this@MainActivity, "no result found...", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "no login...", Toast.LENGTH_LONG).show()
             }else {
-                RecyclerViewAdapter.progressionList = it.toMutableList()
-                RecyclerViewAdapter.notifyDataSetChanged()
-            }
-        })
-        viewModel.getProgressionList()
-
-        viewModel.getCreateNewProgressionObservable().observe(this, Observer<ProgressionModel?>{
-            if (it == null){
-                Toast.makeText(this@MainActivity, "failed creation!!...", Toast.LENGTH_LONG).show()
-            }else{
-                //code in case it get created successfully
-            }
-        })
-
-        viewModel.getUpdateProgressionObservable().observe(this, Observer<ProgressionModel?>{
-            if (it == null){
-                Toast.makeText(this@MainActivity, "failed update!!...", Toast.LENGTH_LONG).show()
-            }else{
-                //code in case it get created successfully
-            }
-        })
-
-        viewModel.deleteProgressionObservable().observe(this, Observer<Boolean>{
-            if (it == false){
-                Toast.makeText(this@MainActivity, "failed update!!...", Toast.LENGTH_LONG).show()
-            }else{
-                Toast.makeText(this@MainActivity, "Deleted successfully", Toast.LENGTH_LONG).show()
+                var userLoggedIn = it
+                Log.d("MyApp", "User login: "+ it.toString())
+                Toast.makeText(this@MainActivity, "login success...", Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    fun createProgression(){
-        val progression = ProgressionModel(progression = listOf(mapOf("الأبجدية" to 21, "أعداد" to 32)) )
-        viewModel.createProgression(progression)
-    }
-
-    fun updateProgression(){
-        val progression = ProgressionModel(progression = listOf(mapOf("الأبجدية" to 27, "أعداد" to 33)) )
-        viewModel.updateProgression("64e721ad224577e1040035db", progression)
-        //repopulate the list
-        viewModel.getProgressionList()
-    }
-
-    fun deleteProgression(){
-        viewModel.deleteProgression("64e721ad224577e1040035db")
-        //repopulate the list
-        viewModel.getProgressionList()
+    fun logIn(user: Administrator){
+        viewModel.logIn(user)
     }
 
 }
