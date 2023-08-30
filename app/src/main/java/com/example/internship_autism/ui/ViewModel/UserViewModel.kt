@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.internship_autism.interfaces.UserAPI
-import com.example.internship_autism.models.Administrator
 import com.example.internship_autism.models.User
 import com.example.internship_autism.utils.RetroInstance
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -179,7 +179,7 @@ class UserViewModel:  ViewModel() {
         })
     }
 
-    fun logIn(subject: Administrator){
+    fun logIn(subject: User){
         val retroInstance = RetroInstance.getRetroInstance().create(UserAPI::class.java)
         val call = retroInstance.logIn(subject)
         call.enqueue(object : Callback<User> {
@@ -204,7 +204,7 @@ class UserViewModel:  ViewModel() {
         })
     }
 
-    fun changePassword(subject: Administrator){
+    fun changePassword(subject: User){
         val retroInstance = RetroInstance.getRetroInstance().create(UserAPI::class.java)
         val call = retroInstance.updatePassword( subject)
         call.enqueue(object : Callback<User> {

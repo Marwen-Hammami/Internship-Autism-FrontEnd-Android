@@ -1,13 +1,28 @@
 package com.example.internship_autism.models
 
-open class Card(
+import java.io.Serializable
+
+//open class Card
+data class Card(
     val _id: String? = null,
     val type: String? = null,
     var title: String = "",
     var message: String = "",
-    var hint: String? = null
-)
+    var hint: String? = null,
+    val illustration: String? = null,
+    val suggestion1: String? = null,
+    val illustration1: String? = null,
+    val suggestion2: String? = null,
+    val illustration2: String? = null,
+    val suggestion3: String? = null,
+    val illustration3: String? = null,
+    val correctIllustration: String? = null,
+    val falseIllustration1: String? = null,
+    val falseIllustration2: String? = null,
+    val falseIllustration3: String? = null,
+): Serializable //Serializable so i can pass the object in an intent
 
+/*
 data class LectureCard(
     val illustration: String,
 ) : Card()
@@ -27,3 +42,5 @@ data class ChoiseExerciseCard(
     val falseIllustration2: String,
     val falseIllustration3: String,
 ) : Card()
+
+ */

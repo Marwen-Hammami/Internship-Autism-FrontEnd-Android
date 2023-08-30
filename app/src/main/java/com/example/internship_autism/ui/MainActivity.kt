@@ -1,5 +1,6 @@
 package com.example.internship_autism.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -12,12 +13,13 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import com.example.internship_autism.models.Administrator
 import com.example.internship_autism.models.User
 import com.example.internship_autism.ui.ViewModel.UserViewModel
+import com.example.internship_autism.utils.UserType
 
 class MainActivity : AppCompatActivity() {
     //for the login animation
@@ -28,7 +30,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var loginEmailAddress: EditText
     lateinit var loginPassword: EditText
     lateinit var buttonLogin: AppCompatButton
-    lateinit var viewModel: UserViewModel
+    lateinit var userViewModel: UserViewModel
+    lateinit var errorMessage: TextView
+    lateinit var userResponse: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +57,13 @@ class MainActivity : AppCompatActivity() {
         loginEmailAddress= findViewById(R.id.loginEmailAddress)
         loginPassword= findViewById(R.id.loginPassword)
         buttonLogin= findViewById(R.id.buttonLogin)
+        errorMessage= findViewById(R.id.errorMessage)
 
         initViewModel()
 
         buttonLogin.setOnClickListener{
             //login()
-            var user = Administrator(email = loginEmailAddress.text.toString(), password = loginPassword.text.toString())
+            var user = User(email = loginEmailAddress.text.toString(), password = loginPassword.text.toString())
             logIn(user)
         }
     }
@@ -83,20 +88,39 @@ class MainActivity : AppCompatActivity() {
 
     fun initViewModel() {
         //needs to be better separeted
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        viewModel.logInObservable().observe(this, Observer<User?> {
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        userViewModel.logInObservable().observe(this, Observer<User?> {
             if(it == null) {
+                errorMessage.visibility = View.VISIBLE
                 Toast.makeText(this@MainActivity, "no login...", Toast.LENGTH_LONG).show()
             }else {
-                var userLoggedIn = it
-                Log.d("MyApp", "User login: "+ it.toString())
-                Toast.makeText(this@MainActivity, "login success...", Toast.LENGTH_LONG).show()
+                errorMessage.visibility = View.GONE
+                Log.d("MyApp", "User"+ it)
+                //redirect switch role
+                when (it.__t) {
+                    UserType.Parent -> {
+                        val intent = Intent(this@MainActivity, HomeParent::class.java)
+                            .putExtra("currentUser", it)
+                        startActivity(intent)
+                    }
+                    UserType.Administrator -> {
+                        val intent = Intent(this@MainActivity, HomeAdministrator::class.java)
+                            .putExtra("currentUser", it)
+                        startActivity(intent)
+                    }
+                    UserType.SuperAdministrator ->{
+                        val intent = Intent(this@MainActivity, HomeSuperAdministrator::class.java)
+                            .putExtra("currentUser", it)
+                        startActivity(intent)
+                    }
+                    else -> {}
+                }
             }
         })
     }
 
-    fun logIn(user: Administrator){
-        viewModel.logIn(user)
+    fun logIn(user: User){
+        userViewModel.logIn(user)
     }
 
 }

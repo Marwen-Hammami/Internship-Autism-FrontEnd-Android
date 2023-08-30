@@ -1,14 +1,24 @@
 package com.example.internship_autism.models
 
+import com.example.internship_autism.utils.UserType
+import java.io.Serializable
 import java.util.Date
 
-open class User(
+//open class User
+data class User(
     val _id: String? = null,
-    val type: String? = null,
+    val __t: UserType? = null,
     val firstName: String = "",
-    val lastName: String = ""
-)
-
+    val lastName: String = "",
+    val email: String? = null,
+    val password: String? = null,
+    val sex: String? = null,
+    val avatar: String? = null,
+    val childsList: List<String>? = null,
+    val birthDay: Date? = null,
+    val progression: String? = null
+): Serializable //Serializable so i can pass the object in an intent
+/*
 data class Parent(
     val email: String,
     val password: String,
@@ -33,3 +43,4 @@ data class SuperAdministrator(
     val email: String,
     val password: String
 ) : User()
+ */
