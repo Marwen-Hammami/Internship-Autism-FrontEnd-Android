@@ -14,9 +14,12 @@ data class User(
     val password: String? = null,
     val sex: String? = null,
     val avatar: String? = null,
+    val updatePasswordToken: String? = null,
+    val updatePasswordExpire: Date? = null,
+    val pinCode: String? = null,
     val childsList: List<String>? = null,
     val birthDay: Date? = null,
-    val progression: String? = null
+    val progression: ProgressionModel? = null
 ): Serializable //Serializable so i can pass the object in an intent
 /*
 data class Parent(

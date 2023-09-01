@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "no login...", Toast.LENGTH_LONG).show()
             }else {
                 errorMessage.visibility = View.GONE
-                Log.d("MyApp", "User"+ it)
+                //Log.d("MyApp", "User"+ it)
                 //redirect switch role
                 when (it.__t) {
                     UserType.Parent -> {

@@ -1,15 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/Secondary">
 
     <TextView
-        android:id="@+id/testMessage"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test user"
-        tools:layout_editor_absoluteX="178dp"
-        tools:layout_editor_absoluteY="125dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="الرجاء اختيار حسابك"
+        android:textSize="@dimen/title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardParent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintWidth_percent="0.23">
+
+        <ImageView
+            android:id="@+id/imageViewParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/plus"
+            app:layout_constraintRight_toRightOf="@id/cardParent"
+            app:layout_constraintTop_toTopOf="@id/cardParent" />
+
+        <TextView
+            android:id="@+id/textVieParent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="إضافة طفل"
+            android:textSize="@dimen/title"
+            app:layout_constraintEnd_toEndOf="@id/cardParent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintRight_toRightOf="@id/cardParent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewParent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardChild1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toLeftOf="@id/cardParent"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintWidth_percent="0.23">
+
+        <ImageView
+            android:id="@+id/imageViewChild1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/plus"
+            app:layout_constraintRight_toRightOf="@id/cardChild1"
+            app:layout_constraintTop_toTopOf="@id/imageViewChild1" />
+
+        <TextView
+            android:id="@+id/textViewChild1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="إضافة طفل"
+            android:textSize="@dimen/title"
+            app:layout_constraintEnd_toEndOf="@id/cardChild1"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintRight_toRightOf="@id/cardChild1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewChild1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardChild2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toLeftOf="@id/cardChild1"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintWidth_percent="0.23">
+
+        <ImageView
+            android:id="@+id/imageViewChild2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/plus"
+            app:layout_constraintRight_toRightOf="@id/cardChild2"
+            app:layout_constraintTop_toTopOf="@id/imageViewChild2" />
+
+        <TextView
+            android:id="@+id/textViewChild2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="إضافة طفل"
+            android:textSize="@dimen/title"
+            app:layout_constraintEnd_toEndOf="@id/cardChild2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintRight_toRightOf="@id/cardChild2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewChild2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardChild3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toLeftOf="@id/cardChild2"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintWidth_percent="0.23">
+
+        <ImageView
+            android:id="@+id/imageViewChild3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/plus"
+            app:layout_constraintRight_toRightOf="@id/cardChild3"
+            app:layout_constraintTop_toTopOf="@id/imageViewChild3" />
+
+        <TextView
+            android:id="@+id/textViewChild3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="إضافة طفل"
+            android:textSize="@dimen/title"
+            app:layout_constraintEnd_toEndOf="@id/cardChild3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintRight_toRightOf="@id/cardChild3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewChild3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

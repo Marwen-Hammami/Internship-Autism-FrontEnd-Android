@@ -14,15 +14,22 @@ import retrofit2.Response
 class UserViewModel:  ViewModel() {
     lateinit var recyclerListData: MutableLiveData<List<User>>
     lateinit var getLiveData: MutableLiveData<User>
+    lateinit var getLiveData2: MutableLiveData<User>
+    lateinit var getLiveData3: MutableLiveData<User>
     lateinit var createLiveData: MutableLiveData<User?>
     lateinit var updateLiveData: MutableLiveData<User?>
     lateinit var deleteLiveData: MutableLiveData<Boolean>
     lateinit var login: MutableLiveData<User?>
     lateinit var changePassword: MutableLiveData<User?>
 
+    //when calling getUser multiple times
+    var countCalls: Int = 0
+
     init {
         recyclerListData = MutableLiveData()
         getLiveData = MutableLiveData()
+        getLiveData2 = MutableLiveData()
+        getLiveData3 = MutableLiveData()
         createLiveData = MutableLiveData()
         updateLiveData = MutableLiveData()
         deleteLiveData = MutableLiveData()
@@ -37,6 +44,13 @@ class UserViewModel:  ViewModel() {
     fun getUserObservable(): MutableLiveData<User> {
         return getLiveData
     }
+    fun getUserObservable2(): MutableLiveData<User> {
+        return getLiveData2
+    }
+    fun getUserObservable3(): MutableLiveData<User> {
+        return getLiveData3
+    }
+
 
     fun getCreateNewUserObservable(): MutableLiveData<User?> {
         return createLiveData
@@ -93,7 +107,18 @@ class UserViewModel:  ViewModel() {
                     response: Response<User>
                 ) {
                     if (response.isSuccessful) {
-                        getLiveData.postValue(response.body())
+                        countCalls++
+                        if (countCalls == 1) {
+                            getLiveData.postValue(response.body())
+                            getLiveData2.postValue(null)
+                            getLiveData3.postValue(null)
+                        }else if (countCalls == 2) {
+                            getLiveData2.postValue(response.body())
+                            getLiveData3.postValue(null)
+                        }else {
+                            getLiveData3.postValue(response.body())
+                        }
+
                     }else {
                         getLiveData.postValue(null)
                     }
