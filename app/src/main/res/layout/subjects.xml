@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Secondary">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="الرجاء اختيار الموضوع"
+        android:textSize="@dimen/title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardSubject1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.23">
+
+        <ImageView
+            android:id="@+id/imageViewSubject1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/comingsoon"
+            app:layout_constraintRight_toRightOf="@id/cardSubject1"
+            app:layout_constraintTop_toTopOf="@id/cardSubject1"
+            app:layout_constraintBottom_toBottomOf="@id/cardSubject1" />
+
+        <TextView
+            android:id="@+id/textViewSubject1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="قريباً"
+            android:textSize="@dimen/title"
+            app:layout_constraintEnd_toEndOf="@id/cardSubject1"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintRight_toRightOf="@id/cardSubject1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewSubject1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardSubject2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toLeftOf="@id/cardSubject1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.23">
+
+        <ImageView
+            android:id="@+id/imageViewSubject2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/comingsoon"
+            app:layout_constraintRight_toRightOf="@id/cardSubject2"
+            app:layout_constraintTop_toTopOf="@id/cardSubject2"
+            app:layout_constraintBottom_toBottomOf="@id/cardSubject2"/>
+
+        <TextView
+            android:id="@+id/textViewSubject2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="قريباً"
+            android:textSize="@dimen/title"
+            app:layout_constraintEnd_toEndOf="@id/cardSubject2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintRight_toRightOf="@id/cardSubject2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewSubject2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardSubject3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toLeftOf="@id/cardSubject2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.23">
+
+        <ImageView
+            android:id="@+id/imageViewSubject3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/comingsoon"
+            app:layout_constraintRight_toRightOf="@id/cardSubject3"
+            app:layout_constraintTop_toTopOf="@id/cardSubject3"
+            app:layout_constraintBottom_toBottomOf="@id/cardSubject3"/>
+
+        <TextView
+            android:id="@+id/textViewSubject3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="قريباً"
+            android:textSize="@dimen/title"
+            app:layout_constraintEnd_toEndOf="@id/cardSubject3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintRight_toRightOf="@id/cardSubject3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewSubject3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardSubject4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toLeftOf="@id/cardSubject3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.23">
+
+        <ImageView
+            android:id="@+id/imageViewSubject4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/comingsoon"
+            app:layout_constraintRight_toRightOf="@id/cardSubject4"
+            app:layout_constraintTop_toTopOf="@id/cardSubject4"
+            app:layout_constraintBottom_toBottomOf="@id/cardSubject4"/>
+
+        <TextView
+            android:id="@+id/textViewSubject4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="قريباً"
+            android:textSize="@dimen/title"
+            app:layout_constraintEnd_toEndOf="@id/cardSubject4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintRight_toRightOf="@id/cardSubject4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewSubject4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

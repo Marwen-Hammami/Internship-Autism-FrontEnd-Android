@@ -27,6 +27,7 @@
         <activity android:name=".ui.HomeParent" />
         <activity android:name=".ui.HomeAdministrator" />
         <activity android:name=".ui.HomeSuperAdministrator" />
+        <activity android:name=".ui.Subjects" />
     </application>
 
 </manifest>

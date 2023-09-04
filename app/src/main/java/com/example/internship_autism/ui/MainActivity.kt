@@ -38,33 +38,44 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_login)
 
-        //for the login animation
-        constraintLayout = findViewById(R.id.constraintLayout)
+        hideBottomNavigationBar()
 
-        //hide the navigation bar for more space
+        findElementsById()
+
+        logInScreenTransitionAnimation()
+
+        initViewModel()
+
+        buttonLogin.setOnClickListener{
+            var user = User(email = loginEmailAddress.text.toString(), password = loginPassword.text.toString())
+            logIn(user)
+        }
+    }
+
+    fun hideBottomNavigationBar() {
+        //hide the android navigation bar for more space
         window.decorView.apply {
             systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         }
+    }
 
-        constraintLayout.setOnClickListener {
-            if (isDetailLayout)
-                swapFrames(R.layout.auth_login) // switch to default layout
-            else
-                swapFrames(R.layout.auth_login_detail) // switch to detail layout
-        }
+    fun findElementsById() {
+        //For the login animation
+        constraintLayout = findViewById(R.id.constraintLayout)
 
         //login elements
         loginEmailAddress= findViewById(R.id.loginEmailAddress)
         loginPassword= findViewById(R.id.loginPassword)
         buttonLogin= findViewById(R.id.buttonLogin)
         errorMessage= findViewById(R.id.errorMessage)
+    }
 
-        initViewModel()
-
-        buttonLogin.setOnClickListener{
-            //login()
-            var user = User(email = loginEmailAddress.text.toString(), password = loginPassword.text.toString())
-            logIn(user)
+    fun logInScreenTransitionAnimation() {
+        constraintLayout.setOnClickListener {
+            if (isDetailLayout)
+                swapFrames(R.layout.auth_login) // switch to default layout
+            else
+                swapFrames(R.layout.auth_login_detail) // switch to detail layout
         }
     }
 

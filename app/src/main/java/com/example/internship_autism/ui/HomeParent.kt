@@ -3,14 +3,17 @@ package com.example.internship_autism.ui
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.app.NavUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.internship_autism.R
@@ -32,20 +35,42 @@ class HomeParent : AppCompatActivity() {
     lateinit var textViewChild3: TextView
     lateinit var imageViewChild3: ImageView
 
-    //current connected parent
+    //On Click User
+    lateinit var cardParent: ConstraintLayout
+    lateinit var cardChild1: ConstraintLayout
+    lateinit var cardChild2: ConstraintLayout
+    lateinit var cardChild3: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_parent)
 
-        //hide the navigation bar for more space
-        window.decorView.apply {
-            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }
+        hideBottomNavigationBar()
 
         //get current parent from intent
         val parent = intent.getSerializableExtra("currentUser") as User
 
+        findElementsById()
+
+        //init User viewModel
+        initViewModel()
+
+        getChilds(parent.childsList)
+
+        initParent(parent)
+
+        UsersOnClickRedirect(parent)
+
+    }
+
+    fun hideBottomNavigationBar() {
+        //hide the navigation bar for more space
+        window.decorView.apply {
+            systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
+    }
+
+    fun findElementsById() {
         //Avatar and Name of Users
         textVieParent = findViewById(R.id.textVieParent)
         imageViewParent = findViewById(R.id.imageViewParent)
@@ -56,13 +81,11 @@ class HomeParent : AppCompatActivity() {
         textViewChild3 = findViewById(R.id.textViewChild3)
         imageViewChild3 = findViewById(R.id.imageViewChild3)
 
-
-        initViewModel()
-
-        getChilds(parent.childsList)
-
-        initParent(parent)
-
+        //On Click User
+        cardParent = findViewById(R.id.cardParent)
+        cardChild1 = findViewById(R.id.cardChild1)
+        cardChild2 = findViewById(R.id.cardChild2)
+        cardChild3 = findViewById(R.id.cardChild3)
     }
 
     fun getChilds(list: List<String>?){
@@ -75,7 +98,6 @@ class HomeParent : AppCompatActivity() {
 
     fun initViewModel() {
         listChilds = mutableListOf()
-        //needs to be better separeted
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         userViewModel.getUserObservable().observe(this, Observer<User?> {
             if(it == null) {
@@ -115,6 +137,7 @@ class HomeParent : AppCompatActivity() {
         imageViewParent.setImageResource(img)
     }
 
+    //return the correct picture switch User.avatar
     fun getAvatar(avatarName: String?): Int {
         return when (avatarName) {
             "male01" -> R.drawable.male01
@@ -138,6 +161,45 @@ class HomeParent : AppCompatActivity() {
             "female14" -> R.drawable.female14
             "female15" -> R.drawable.female15
             else -> R.drawable.female01
+        }
+    }
+
+    fun UsersOnClickRedirect(parent: User) {
+        cardParent.setOnClickListener{
+            Toast.makeText(this@HomeParent, "Parent Clicked", Toast.LENGTH_LONG).show()
+        }
+        cardChild1.setOnClickListener{
+            if (listChilds.size > 0) {
+                val intent = Intent(this@HomeParent, Subjects::class.java)
+                    .putExtra("currentUser", parent)
+                    .putExtra("currentChild", listChilds[0])
+                startActivity(intent)
+            }else{
+                //after pin code
+                Toast.makeText(this@HomeParent, "Go To ADD Child Form", Toast.LENGTH_LONG).show()
+            }
+        }
+        cardChild2.setOnClickListener{
+            if (listChilds.size > 1) {
+                val intent = Intent(this@HomeParent, Subjects::class.java)
+                    .putExtra("currentUser", parent)
+                    .putExtra("currentChild", listChilds[1])
+                startActivity(intent)
+            }else{
+                //after pin code
+                Toast.makeText(this@HomeParent, "Go To ADD Child Form", Toast.LENGTH_LONG).show()
+            }
+        }
+        cardChild3.setOnClickListener{
+            if (listChilds.size > 2) {
+                val intent = Intent(this@HomeParent, Subjects::class.java)
+                    .putExtra("currentUser", parent)
+                    .putExtra("currentChild", listChilds[2])
+                startActivity(intent)
+            }else{
+                //after pin code
+                Toast.makeText(this@HomeParent, "Go To ADD Child Form", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
