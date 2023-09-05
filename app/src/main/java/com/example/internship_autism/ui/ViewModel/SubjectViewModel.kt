@@ -55,6 +55,7 @@ class SubjectViewModel:  ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     recyclerListData.postValue(response.body())
+                    Log.d("MyApp", "Subject list: "+ response.body())
                 }else {
                     recyclerListData.postValue(null)
                 }

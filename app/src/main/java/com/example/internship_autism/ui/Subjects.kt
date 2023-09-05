@@ -1,5 +1,6 @@
 package com.example.internship_autism.ui
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -43,11 +44,9 @@ class Subjects : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.subjects)
 
-        //get current parent from intent
+        //get current elements from intent
         val parent = intent.getSerializableExtra("currentUser") as User
         val child = intent.getSerializableExtra("currentChild") as User
-
-        var progression = getChildProgression(child)
 
         hideBottomNavigationBar()
 
@@ -58,24 +57,7 @@ class Subjects : AppCompatActivity() {
 
         subjectViewModel.getSubjectList()
 
-        populateSubjectsCards()
-
-        subjectOnClickRedirection()
-
-    }
-
-    fun getChildProgression(child: User): Any {
-        //Map of the child progression
-        val progression = child.progression?.progression?.get(0)
-        //cast the nullable Map to a non nullable Map, so i can acces an element by its Key
-        val newMap: Map<String, Int> = progression as? Map<String, Int> ?: emptyMap()
-        return newMap
-//        try {
-//            Log.d("MyApp", "-------------------------------")
-//            Log.d("MyApp", "try"+newMap["الأبجدية"])
-//        }catch (e: Exception){
-//            Log.d("MyApp", "erreur catched "+ e.message)
-//        }
+        subjectOnClickRedirection(parent, child)
     }
 
     fun hideBottomNavigationBar() {
@@ -103,8 +85,37 @@ class Subjects : AppCompatActivity() {
         cardSubject4 = findViewById(R.id.cardSubject4)
     }
 
-    fun subjectOnClickRedirection() {
-        //to do
+    fun subjectOnClickRedirection(parent: User, child: User) {
+        cardSubject1.setOnClickListener{
+            SubjectSelected(parent, child, 0)
+        }
+        cardSubject2.setOnClickListener{
+            SubjectSelected(parent, child, 1)
+        }
+        cardSubject3.setOnClickListener{
+            SubjectSelected(parent, child, 2)
+        }
+        cardSubject4.setOnClickListener{
+            SubjectSelected(parent, child, 3)
+        }
+    }
+
+    fun SubjectSelected(parent: User, child: User, cardNumber: Int) {
+        // Check that there is at least the minimum of cardNumber subjects
+        if (listSubjects.size > cardNumber) {
+            // Check that the Subject Contains Lessons
+            if (listSubjects[cardNumber].listLessons.isNotEmpty()){
+                // Serializable List , so i can pass it in the intent
+                val serializableList = ArrayList(listSubjects[cardNumber].listLessons)
+                val intent = Intent(this@Subjects, Lessons::class.java)
+                    .putExtra("currentUser", parent)
+                    .putExtra("currentChild", child)
+                    .putExtra("lessons", serializableList)
+                startActivity(intent)
+            }
+        }else {
+            Log.w("MyApp", "No lesson "+ cardNumber)
+        }
     }
 
     fun initViewModel() {
@@ -122,8 +133,6 @@ class Subjects : AppCompatActivity() {
 
     fun populateSubjectsCards() {
         if (listSubjects.isNotEmpty()){
-            Log.w("MyApp", "subs"+ listSubjects)
-            Log.w("MyApp", "illustration 0"+ listSubjects[0].illustration)
             try {
                 textViewSubject1.text = listSubjects[0].name
                 val bitmap = convertBase64ImageToBitmap(listSubjects[0].illustration)

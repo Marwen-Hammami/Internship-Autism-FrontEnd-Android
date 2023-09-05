@@ -28,6 +28,7 @@
         <activity android:name=".ui.HomeAdministrator" />
         <activity android:name=".ui.HomeSuperAdministrator" />
         <activity android:name=".ui.Subjects" />
+        <activity android:name=".ui.Lessons" />
     </application>
 
 </manifest>
