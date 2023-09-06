@@ -103,7 +103,6 @@ class MainActivity : AppCompatActivity() {
         userViewModel.logInObservable().observe(this, Observer<User?> {
             if(it == null) {
                 errorMessage.visibility = View.VISIBLE
-                Toast.makeText(this@MainActivity, "no login...", Toast.LENGTH_LONG).show()
             }else {
                 errorMessage.visibility = View.GONE
                 //Log.d("MyApp", "User"+ it)

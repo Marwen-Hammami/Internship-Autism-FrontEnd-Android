@@ -28,6 +28,14 @@ class LessonRecyclerView constructor(private val getActivity: Lessons, private v
         return lessonsList.size
     }
 
+    // Define a listener for item clicks
+    private var onItemClickListener: ((Int) -> Unit)? = null
+
+    // Method to set the item click listener
+    fun setOnItemClickListener(listener: (Int) -> Unit) {
+        onItemClickListener = listener
+    }
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.tvLesson.text = lessonsList[position].name
 
@@ -35,7 +43,8 @@ class LessonRecyclerView constructor(private val getActivity: Lessons, private v
         holder.ivLesson.setImageBitmap(bitmap)
 
         holder.cardView.setOnClickListener{
-            Log.w("MyApp", "Click Click onBindViewHolder LessonRecyclerView - "+lessonsList[position].name)
+            //Method so i can redefine OnClick action the Lesson Activity
+            onItemClickListener?.invoke(position)
         }
     }
 

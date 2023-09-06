@@ -6,6 +6,7 @@ import java.io.Serializable
 data class Card(
     val _id: String? = null,
     val type: String? = null,
+    val __t: String? = null,
     var title: String = "",
     var message: String = "",
     var hint: String? = null,

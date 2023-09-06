@@ -1,6 +1,7 @@
 package com.example.internship_autism.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -36,6 +37,13 @@ class Lessons : AppCompatActivity()  {
 //        Log.w("MyApp", "child"+child)
 //        Log.w("MyApp", "lessons"+listLessons)
 //        Log.w("MyApp", "prog"+progression)
+
+        recyclerViewLessonsAdapter?.setOnItemClickListener { position ->
+            // Handle the item click event here
+            val clickedLesson = listLessons[position]
+            // Do something with the clicked lesson
+            Log.w("MyApp", "Click Click In Activity - "+listLessons[position])
+        }
 
     }
 
