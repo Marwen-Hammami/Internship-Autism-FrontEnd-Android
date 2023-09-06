@@ -15,13 +15,24 @@ class CardViewModel:  ViewModel() {
 
     lateinit var recyclerListData: MutableLiveData<List<Card>>
     lateinit var getLiveData: MutableLiveData<Card>
+    lateinit var getLiveData2: MutableLiveData<Card>
+    lateinit var getLiveData3: MutableLiveData<Card>
+    lateinit var getLiveData4: MutableLiveData<Card>
+    lateinit var getLiveData5: MutableLiveData<Card>
     lateinit var createLiveData: MutableLiveData<Card?>
     lateinit var updateLiveData: MutableLiveData<Card?>
     lateinit var deleteLiveData: MutableLiveData<Boolean>
 
+    //when calling getCard multiple times
+    var countCalls: Int = 0
+
     init {
         recyclerListData = MutableLiveData()
         getLiveData = MutableLiveData()
+        getLiveData2 = MutableLiveData()
+        getLiveData3 = MutableLiveData()
+        getLiveData4 = MutableLiveData()
+        getLiveData5 = MutableLiveData()
         createLiveData = MutableLiveData()
         updateLiveData = MutableLiveData()
         deleteLiveData = MutableLiveData()
@@ -33,6 +44,18 @@ class CardViewModel:  ViewModel() {
 
     fun getCardObservable(): MutableLiveData<Card> {
         return getLiveData
+    }
+    fun getCardObservable2(): MutableLiveData<Card> {
+        return getLiveData2
+    }
+    fun getCardObservable3(): MutableLiveData<Card> {
+        return getLiveData3
+    }
+    fun getCardObservable4(): MutableLiveData<Card> {
+        return getLiveData4
+    }
+    fun getCardObservable5(): MutableLiveData<Card> {
+        return getLiveData5
     }
 
     fun getCreateNewCardObservable(): MutableLiveData<Card?> {
@@ -82,7 +105,28 @@ class CardViewModel:  ViewModel() {
                     response: Response<Card>
                 ) {
                     if (response.isSuccessful) {
-                        getLiveData.postValue(response.body())
+                        countCalls++
+                        when (countCalls) {
+                            1 -> {
+                                getLiveData.postValue(response.body())
+                                getLiveData2.postValue(null)
+                                getLiveData3.postValue(null)
+                                getLiveData4.postValue(null)
+                                getLiveData5.postValue(null)
+                            }
+                            2 -> {
+                                getLiveData2.postValue(response.body())
+                            }
+                            3 -> {
+                                getLiveData3.postValue(response.body())
+                            }
+                            4 -> {
+                                getLiveData4.postValue(response.body())
+                            }
+                            5 -> {
+                                getLiveData5.postValue(response.body())
+                            }
+                        }
                     }else {
                         getLiveData.postValue(null)
                     }
@@ -166,5 +210,9 @@ class CardViewModel:  ViewModel() {
                 deleteLiveData.postValue(false) // Handle network or other failures
             }
         })
+    }
+
+    fun clearCounter(){
+        countCalls = 0
     }
 }

@@ -1,26 +1,37 @@
 package com.example.internship_autism.ui
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.internship_autism.R
+import com.example.internship_autism.models.Card
 import com.example.internship_autism.models.LessonModel
 import com.example.internship_autism.models.User
 import com.example.internship_autism.ui.RecyclerView.LessonRecyclerView
+import com.example.internship_autism.ui.ViewModel.CardViewModel
 
 class Lessons : AppCompatActivity()  {
     //For Lesson Display On a Grid
     private var recyclerView: RecyclerView? = null
     private var recyclerViewLessonsAdapter: LessonRecyclerView? = null
 
+    //List of cards of a lesson
+    lateinit var cardViewModel: CardViewModel
+    var listCards: MutableList<Card> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lessons)
 
         hideBottomNavigationBar()
+
+        initViewModel()
 
         //get current elements from intent
         val parent = intent.getSerializableExtra("currentUser") as User
@@ -39,12 +50,76 @@ class Lessons : AppCompatActivity()  {
 //        Log.w("MyApp", "prog"+progression)
 
         recyclerViewLessonsAdapter?.setOnItemClickListener { position ->
-            // Handle the item click event here
-            val clickedLesson = listLessons[position]
-            // Do something with the clicked lesson
-            Log.w("MyApp", "Click Click In Activity - "+listLessons[position])
+            //populate listCards
+            getCards(listLessons[position].listCards)
         }
 
+
+        checkIfListCardsHaveBeenPopulated()
+    }
+
+    fun checkIfListCardsHaveBeenPopulated() {
+        val handler = Handler()
+        val delayMillis = 1000 // Set the delay in milliseconds
+
+        val checkConditionRunnable = object : Runnable {
+            override fun run() {
+                val conditionToCheck = listCards.size == 0
+                // Check the condition
+                if (conditionToCheck) {
+                    //ListCards STill Empty
+                    // Re-post the Runnable to run it again after a delay
+                    handler.postDelayed(this, delayMillis.toLong())
+                } else {
+                    // Condition is not met, stop checking
+                    handler.removeCallbacks(this)
+                    //Call Card Activity
+                    //
+                    Log.w("MyApp", "False - "+listCards)
+                }
+            }
+        }
+        // Start the periodic check
+        handler.postDelayed(checkConditionRunnable, delayMillis.toLong())
+    }
+
+    fun initViewModel() {
+        cardViewModel = ViewModelProvider(this).get(CardViewModel::class.java)
+        cardViewModel.getCardObservable().observe(this, Observer<Card?> {
+            if(it == null) {
+                Log.d("MyApp", "No card 1" )
+            }else {
+                listCards.add(it)
+            }
+        })
+        cardViewModel.getCardObservable2().observe(this, Observer<Card?> {
+            if(it == null) {
+                Log.d("MyApp", "No card 2" )
+            }else {
+                listCards.add(it)
+            }
+        })
+        cardViewModel.getCardObservable3().observe(this, Observer<Card?> {
+            if(it == null) {
+                Log.d("MyApp", "No card 3" )
+            }else {
+                listCards.add(it)
+            }
+        })
+        cardViewModel.getCardObservable4().observe(this, Observer<Card?> {
+            if(it == null) {
+                Log.d("MyApp", "No card 4" )
+            }else {
+                listCards.add(it)
+            }
+        })
+        cardViewModel.getCardObservable5().observe(this, Observer<Card?> {
+            if(it == null) {
+                Log.d("MyApp", "No card 5" )
+            }else {
+                listCards.add(it)
+            }
+        })
     }
 
     fun hideBottomNavigationBar() {
@@ -80,6 +155,15 @@ class Lessons : AppCompatActivity()  {
         recyclerView!!.adapter = recyclerViewLessonsAdapter
 
         recyclerViewLessonsAdapter!!.notifyDataSetChanged()
+    }
+
+    fun getCards(list: List<String>?){
+        if (list != null) {
+            list.forEach { item ->
+                cardViewModel.getCard(item)
+            }
+            cardViewModel.clearCounter()
+        }
     }
 
 }
