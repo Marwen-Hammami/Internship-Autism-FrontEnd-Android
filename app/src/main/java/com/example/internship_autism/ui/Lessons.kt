@@ -1,5 +1,6 @@
 package com.example.internship_autism.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -55,10 +56,10 @@ class Lessons : AppCompatActivity()  {
         }
 
 
-        checkIfListCardsHaveBeenPopulated()
+        checkIfListCardsHaveBeenPopulated(child)
     }
 
-    fun checkIfListCardsHaveBeenPopulated() {
+    fun checkIfListCardsHaveBeenPopulated(child: User) {
         val handler = Handler()
         val delayMillis = 1000 // Set the delay in milliseconds
 
@@ -74,8 +75,18 @@ class Lessons : AppCompatActivity()  {
                     // Condition is not met, stop checking
                     handler.removeCallbacks(this)
                     //Call Card Activity
-                    //
-                    Log.w("MyApp", "False - "+listCards)
+                    val serializableList = ArrayList(listCards)
+                    val intent = Intent(this@Lessons, Cards::class.java)
+                        .putExtra("child", child)
+                        .putExtra("listCards", serializableList)
+                    // So when i use finish() all the activity on top of Lessons gets deleted
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+                    // ReStart the periodic check for futur use
+                    listCards.removeAll(listCards)
+                    handler.postDelayed(this, delayMillis.toLong())
+
+                    startActivity(intent)
                 }
             }
         }

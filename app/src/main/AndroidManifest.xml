@@ -29,6 +29,7 @@
         <activity android:name=".ui.HomeSuperAdministrator" />
         <activity android:name=".ui.Subjects" />
         <activity android:name=".ui.Lessons" />
+        <activity android:name=".ui.Cards" />
     </application>
 
 </manifest>
