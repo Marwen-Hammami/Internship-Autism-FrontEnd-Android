@@ -20,8 +20,15 @@ class Cards : AppCompatActivity()   {
     //Lecture Card
     lateinit var Title: TextView
     lateinit var illustration: ImageView
-    lateinit var next: AppCompatButton
-    lateinit var previous: AppCompatButton
+    lateinit var nextButton: AppCompatButton
+    lateinit var previousButton: AppCompatButton
+
+    //Choise Exercice Card
+    lateinit var TitleChoise: TextView
+    lateinit var illustration_top_left: ImageView
+    lateinit var illustration_top_right: ImageView
+    lateinit var illustration_bottom_left: ImageView
+    lateinit var illustration_bottom_right: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,16 +39,22 @@ class Cards : AppCompatActivity()   {
         val child = intent.getSerializableExtra("child") as User
         val listCards = intent.getSerializableExtra("listCards") as MutableList<Card>
 
-        if (cardNumber <= listCards.size) {
+        displayCard(listCards)
+    }
+
+    fun displayCard(listCards: MutableList<Card>) {
+        // 0 < 3 --- 1 < 3 --- 2 < 3
+        if (cardNumber < listCards.size) {
             var current = listCards[cardNumber]
             when (current.__t) {
-                "Lecture" -> displayLecture(current)
-                "ChoiseExercise" -> displayChoiseExercice(current)
-                "ArrowExercise" -> displayArrowExercice(current)
+                "Lecture" -> displayLecture(current, listCards)
+                "ChoiseExercise" -> displayChoiseExercice(current, listCards)
+                "ArrowExercise" -> displayArrowExercice(current, listCards)
             }
 
+        } else {
+            finish()
         }
-
     }
 
     fun hideBottomNavigationBar() {
@@ -51,21 +64,21 @@ class Cards : AppCompatActivity()   {
         }
     }
 
-    fun displayLecture(current: Card) {
+    fun displayLecture(current: Card, listCards: MutableList<Card>) {
         setContentView(R.layout.card_lecture)
 
         findElementsByIdLecture()
 
         populateLectureTemplate(current)
 
-
+        onClickNext(listCards)
     }
 
     fun findElementsByIdLecture() {
         Title = findViewById(R.id.Title)
         illustration = findViewById(R.id.illustration)
-        next = findViewById(R.id.next)
-        previous = findViewById(R.id.previous)
+        nextButton = findViewById(R.id.nextButton)
+        previousButton = findViewById(R.id.previousButton)
     }
 
     fun populateLectureTemplate(current: Card) {
@@ -74,12 +87,56 @@ class Cards : AppCompatActivity()   {
         illustration.setImageBitmap(bitmap)
     }
 
-    fun displayChoiseExercice(current: Card) {
-        TODO("Not yet implemented")
+    fun onClickNext(listCards: MutableList<Card>) {
+        nextButton.setOnClickListener {
+            if (cardNumber == listCards.size - 1) {
+                finish()
+            } else {
+                cardNumber++
+                displayCard(listCards)
+            }
+        }
+    }
+
+    fun displayChoiseExercice(current: Card, listCards: MutableList<Card>) {
+        setContentView(R.layout.card_choise_exercice)
+
+        findElementsByIdChoiseExercice()
+
+        populateChoiseExerciceTemplate(current)
+
+        onClickNext(listCards)
+
+        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(illustration_top_left))
+        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(illustration_top_right))
+        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(illustration_bottom_left))
+        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(illustration_bottom_right))
+    }
+
+    fun findElementsByIdChoiseExercice() {
+        TitleChoise = findViewById(R.id.TitleChoise)
+        illustration_top_left = findViewById(R.id.illustration_top_left)
+        illustration_top_right = findViewById(R.id.illustration_top_right)
+        illustration_bottom_left = findViewById(R.id.illustration_bottom_left)
+        illustration_bottom_right = findViewById(R.id.illustration_bottom_right)
+        nextButton = findViewById(R.id.nextButton)
+        previousButton = findViewById(R.id.previousButton)
+    }
+
+    fun populateChoiseExerciceTemplate(current: Card) {
+        TitleChoise.text = current.title
+        val bitmap1 = current.correctIllustration?.let { convertBase64ImageToBitmap(it) }
+        illustration_top_left.setImageBitmap(bitmap1)
+        val bitmap2 = current.falseIllustration1?.let { convertBase64ImageToBitmap(it) }
+        illustration_top_right.setImageBitmap(bitmap2)
+        val bitmap3 = current.falseIllustration2?.let { convertBase64ImageToBitmap(it) }
+        illustration_bottom_left.setImageBitmap(bitmap3)
+        val bitmap4 = current.falseIllustration3?.let { convertBase64ImageToBitmap(it) }
+        illustration_bottom_right.setImageBitmap(bitmap4)
     }
 
 
-    fun displayArrowExercice(current: Card) {
+    fun displayArrowExercice(current: Card, listCards: MutableList<Card>) {
         Log.w("MyApp", "Arrow Exercice TODO" )
     }
 
