@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.example.internship_autism.R
@@ -99,18 +100,21 @@ class Cards : AppCompatActivity()   {
     }
 
     fun displayChoiseExercice(current: Card, listCards: MutableList<Card>) {
+        //variables
+        var correctImageView : ImageView? = null
+
         setContentView(R.layout.card_choise_exercice)
 
         findElementsByIdChoiseExercice()
 
-        populateChoiseExerciceTemplate(current)
+        correctImageView = populateChoiseExerciceTemplate(current, listCards)
 
         onClickNext(listCards)
 
-        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(illustration_top_left))
-        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(illustration_top_right))
-        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(illustration_bottom_left))
-        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(illustration_bottom_right))
+        Log.d("MyApp", "illustration_top_left " + illustration_top_left.equals(correctImageView))
+        Log.d("MyApp", "illustration_top_right " + illustration_top_right.equals(correctImageView))
+        Log.d("MyApp", "illustration_bottom_left " + illustration_bottom_left.equals(correctImageView))
+        Log.d("MyApp", "illustration_bottom_right " + illustration_bottom_right.equals(correctImageView))
     }
 
     fun findElementsByIdChoiseExercice() {
@@ -123,16 +127,51 @@ class Cards : AppCompatActivity()   {
         previousButton = findViewById(R.id.previousButton)
     }
 
-    fun populateChoiseExerciceTemplate(current: Card) {
+    fun populateChoiseExerciceTemplate(current: Card, listCards: MutableList<Card>): ImageView? {
         TitleChoise.text = current.title
+
+        //Convert the card images to bitmap
         val bitmap1 = current.correctIllustration?.let { convertBase64ImageToBitmap(it) }
-        illustration_top_left.setImageBitmap(bitmap1)
         val bitmap2 = current.falseIllustration1?.let { convertBase64ImageToBitmap(it) }
-        illustration_top_right.setImageBitmap(bitmap2)
         val bitmap3 = current.falseIllustration2?.let { convertBase64ImageToBitmap(it) }
-        illustration_bottom_left.setImageBitmap(bitmap3)
         val bitmap4 = current.falseIllustration3?.let { convertBase64ImageToBitmap(it) }
-        illustration_bottom_right.setImageBitmap(bitmap4)
+
+        val imageBitmaps = mutableListOf(bitmap1, bitmap2, bitmap3, bitmap4)
+
+        //List of ImageViews
+        val imageViews = mutableListOf(illustration_top_left, illustration_top_right, illustration_bottom_left, illustration_bottom_right)
+
+        imageViews.shuffle()
+        var correctImageViewVar: ImageView? = null
+
+        // Assign images to the shuffled ImageViews
+        for (i in 0 until imageViews.size) {
+            val imageView = imageViews[i]
+            val imageBitmap = imageBitmaps[i]
+            imageView.setImageBitmap(imageBitmap)
+
+            //Store the correct answer in a different variablme for later check
+            if (imageBitmap == bitmap1) {
+                correctImageViewVar = imageView
+            }
+
+            imageView.setOnClickListener {
+                if (imageView.equals(correctImageViewVar)) {
+                    if (cardNumber == listCards.size - 1) {
+                        finish()
+                    } else {
+                        cardNumber++
+                        displayCard(listCards)
+                    }
+                } else {
+                    //hint
+                    Toast.makeText(this@Cards, "اجابة خاطئة", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        return correctImageViewVar
+
     }
 
 
