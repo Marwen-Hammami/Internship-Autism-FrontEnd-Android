@@ -1,4 +1,4 @@
-![alt login](https://drive.google.com/file/d/1F0Vk3vlfK76pyi_Kk9AIAZoBN89uhB-a/view?usp=sharing)
+![Login](https://drive.google.com/uc?export=view&id=1F0Vk3vlfK76pyi_Kk9AIAZoBN89uhB-a)
 ![alt login](https://drive.google.com/file/d/1F0Vk3vlfK76pyi_Kk9AIAZoBN89uhB-a/view?usp=share_link)
 ![alt text](https://drive.google.com/file/d/1c_yy8BF1nwfk0H09Sb1KSjqb-z957aVw/view?usp=share_link)
 ![alt text](https://drive.google.com/file/d/1GNy5WbWscBCpUMArfd-MuRYVy9Cscuyx/view?usp=sharing)
